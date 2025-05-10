@@ -19,3 +19,5 @@ crypto_data = aes.encrypt(file_data)
 with open(file_name, 'wb') as file:
     file.write(crypto_data)
 
+print("[+] Arquivo criptografado com sucesso!")
+

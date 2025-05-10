@@ -1,4 +1,3 @@
-
 # Criptografia AES com Modo CTR
 
 Este projeto implementa a criptografia e descriptografia de arquivos usando o algoritmo AES (Advanced Encryption Standard) no modo **CTR (Counter Mode)**. O **pyaes** é utilizado para realizar a cifra e o modo de operação CTR, que utiliza um contador para gerar um fluxo de chave único.
@@ -36,6 +35,7 @@ O projeto possui os seguintes arquivos principais:
 Para criptografar um arquivo de texto, execute o script `encrypt.py`. Ele irá abrir o arquivo, criptografá-lo e sobrescrever o arquivo com os dados criptografados.
 
 #### Exemplo de uso:
+
 ```bash
 python encrypt.py
 ```
@@ -47,6 +47,7 @@ O script pedirá para você informar o nome do arquivo e fará a criptografia. O
 Para descriptografar um arquivo previamente criptografado, execute o script `decrypt.py`. Este script irá restaurar o arquivo original, desde que você forneça a chave correta usada na criptografia.
 
 #### Exemplo de uso:
+
 ```bash
 python decrypt.py
 ```
@@ -56,6 +57,7 @@ python decrypt.py
 A chave utilizada para criptografar e descriptografar o arquivo deve ser de **16 bytes** (por exemplo, `b'elielgataozin123'`). O contador **`initial_value`** começa com **1** e é incrementado durante o processo de criptografia e descriptografia.
 
 #### Exemplo de chave:
+
 ```python
 key = b'elielgataozin123'  # Chave de 16 bytes
 ```
@@ -68,23 +70,20 @@ key = b'elielgataozin123'  # Chave de 16 bytes
 import os
 import pyaes
 
-# Definindo a chave de 16 bytes
+file_name = 'teste.txt'
+file = open (file_name, 'rb')
+file_data = file.read()
+file.close()
+
 key = b'elielgataozin123'
 
-# Contador fixo
 counter = pyaes.Counter(initial_value=1)
 
-# Abrir arquivo para criptografar
-with open('teste.txt', 'rb') as file:
-    file_data = file.read()
-
-# Criptografando os dados
 aes = pyaes.AESModeOfOperationCTR(key, counter=counter)
-encrypted_data = aes.encrypt(file_data)
+crypto_data = aes.encrypt(file_data)
 
-# Salvar os dados criptografados
-with open('teste_criptografado.txt', 'wb') as file:
-    file.write(encrypted_data)
+with open(file_name, 'wb') as file:
+    file.write(crypto_data)
 
 print("[+] Arquivo criptografado com sucesso!")
 ```
@@ -95,29 +94,24 @@ print("[+] Arquivo criptografado com sucesso!")
 import os
 import pyaes
 
-# Arquivo criptografado
-file_name = 'teste_criptografado.txt'
-
-# Abrir arquivo criptografado
-with open(file_name, 'rb') as file:
-    file_data = file.read()
-
-# Chave de 16 bytes
 key = b'elielgataozin123'
 
-# Mesmo contador usado na criptografia
 counter = pyaes.Counter(initial_value=1)
 
-# Descriptografar
+file_name = 'teste.txt'
+file = open (file_name, 'rb')
+file_data = file.read()
+file.close()
+
 aes = pyaes.AESModeOfOperationCTR(key, counter=counter)
 decrypt_data = aes.decrypt(file_data)
 
-# Remover arquivo criptografado
 os.remove(file_name)
 
-# Salvar arquivo descriptografado
-with open('teste_descriptografado.txt', 'wb') as file:
-    file.write(decrypt_data)
+new_file = 'teste.txt'
+new_file = open(f'{new_file}','wb')
+new_file.write(decrypt_data)
+new_file.close()
 
 print("[+] Arquivo descriptografado com sucesso!")
 ```
